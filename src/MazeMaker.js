@@ -5,6 +5,7 @@ export default class MazeMaker {
 		this.dimensions = {};
 		this.map = [];
 		this.emptySpace = "O";
+		this.visitedIndicator
 		this.wall = "*";
 	}
 
@@ -72,8 +73,8 @@ export default class MazeMaker {
 		for (let i = 0; i < this.dimensions.height; i+=2) {
 			for (let j = 0; j < this.dimensions.width; j+=2) {
 				curPos = {x: j, y: i};
-				rightPos = {x: j + 1, y: i};
-				upPos = {x: j, y: i - 1};
+				rightPos = this.getPosToRight(curPos, 1);
+				upPos = this.getPosUp(curPos, 1);
 				if (i === 0 && !(j >= this.dimensions.width - 2)) {
 					this.setPositionToEmpty(rightPos);
 				} else if ((j >= this.dimensions.width - 2) && i !== 0) {
@@ -89,6 +90,78 @@ export default class MazeMaker {
 				}
 			}
 		}
+	}
+
+	generateMazeWithRecursiveBacktracking() {
+		let curPos = this.getRandomPos();
+		this.recurRecursiveBacktracking(curPos);
+		this.clearOutVisited();
+	}
+
+	recurRecursiveBacktracking(position) {
+		let upPos = this.getPosUp(position, 2);
+		let downPos = this.getPosDown(position, 2);
+		let rightPos = this.getPosToRight(position, 2);
+		let leftPos = this.getPosToLeft(position, 2);
+
+		let choices = this.shuffleArray([upPos, downPos, rightPos, leftPos]);
+
+		for (let i = 0; i < choices.length; i++) {
+
+			if (this.isPositionInBounds(choices[i]) && this.map[choices[i].y][choices[i].x] !== this.visitedIndicator) {
+				this.removeWallBetween(choices[i], position);
+				this.map[choices[i].y][choices[i].x] = this.visitedIndicator;
+				this.recurRecursiveBacktracking(choices[i]);
+			}
+		}
+	}
+
+	removeWallBetween(posOne, posTwo) {
+		let wallToRemoveX = (posOne.x + posTwo.x) / 2;
+		let wallToRemoveY = (posOne.y + posTwo.y) / 2;
+		this.map[wallToRemoveY][wallToRemoveX] = this.emptySpace;
+	}
+
+	clearOutVisited() {
+		for (let i = 0; i < this.dimensions.height; i++) {
+			for (let j = 0; j < this.dimensions.width; j++) {
+				if (this.map[i][j] === this.visitedIndicator) {
+					this.map[i][j] = this.emptySpace;
+				}
+			}
+		}
+	}
+
+	shuffleArray(array) {
+	    for (let i = array.length - 1; i > 0; i--) {
+	        const j = Math.floor(Math.random() * (i + 1));
+	        [array[i], array[j]] = [array[j], array[i]];
+	    }
+	    return array;
+	}
+
+	getRandomPos() {
+		return {x: Math.round(Math.random() * this.dimensions.width / 2) * 2, y: Math.round(Math.random() * this.dimensions.height / 2) * 2};
+	}	
+
+	getPosToRight(pos, steps) {
+		return {x: pos.x + steps, y: pos.y};
+	}
+
+	getPosToLeft(pos, steps) {
+		return {x: pos.x - steps, y: pos.y};
+	}
+
+	getPosDown(pos, steps) {
+		return {x: pos.x, y: pos.y + steps};
+	}
+
+	getPosUp(pos, steps) {
+		return {x: pos.x, y: pos.y - steps};
+	}
+
+	generateMazeWithAlgorithm() {
+		this.generateMazeWithRecursiveBacktracking();
 	}
 
 	isPositionOnEdge(position) {

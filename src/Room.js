@@ -50,7 +50,7 @@ export default class Room {
 	}
 
 	generateMaze() {
-		this.mazeMaker.generateMazeWithBinaryDecisionAlgorithm();
+		this.mazeMaker.generateMazeWithAlgorithm();
 		let newWalls = this.mazeMaker.makeWallLocsFromMaze(this.spriteWidth, this.spriteHeight);
 		this.wallLocations = this.wallLocations.concat(newWalls);
 	}

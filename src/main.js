@@ -96,18 +96,18 @@ function update() {
     player.handleBoost();
     console.log(player.x);
     console.log(player.y);
-    if (player.x < 15 && player.y > 40 && player.y < 600) {
+    if (player.x <= player.body.halfWidth && player.y > 40 && player.y < 600) {
         roomManager.moveLeft(walls, 'standardWall');
-        player.x = 1220;
-    } else if (player.x > 1245 && player.y > 40 && player.y < 600) {
+        player.x = 1280 - player.body.halfWidth - 1;
+    } else if (player.x >= 1280 - player.body.halfWidth && player.y > 40 && player.y < 600) {
         roomManager.moveRight(walls, 'standardWall');
-        player.x = 20;
-    } else if (player.y > 625 && player.x > 40 && player.x < 1240) {
+        player.x = player.body.halfWidth + 1;
+    } else if (player.y >= 640 - player.body.halfHeight && player.x > 40 && player.x < 1240) {
         roomManager.moveDown(walls, 'standardWall');
-        player.y = 20;
-    } else if (player.y < 15 && player.x > 40 && player.x < 1240) {
+        player.y = player.body.halfHeight + 1;
+    } else if (player.y <= player.body.halfHeight && player.x > 40 && player.x < 1240) {
         roomManager.moveUp(walls, 'standardWall');
-        player.y = 620;
+        player.y = 640 - player.body.halfHeight - 1;
     }
 }
 

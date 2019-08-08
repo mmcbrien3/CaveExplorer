@@ -19,7 +19,7 @@ export default class RoomManager {
 
 	generateAllRooms() {
 		
-		this.mazeMaker.generateMazeWithBinaryDecisionAlgorithm();
+		this.mazeMaker.generateMazeWithAlgorithm();
 		let curRoom = null;
 		let curPos = {};
 		for (let i = 0; i <= Math.floor(this.dimensions.height / 2); i++) {
@@ -28,7 +28,7 @@ export default class RoomManager {
 				curPos = {x: j, y: i};
 				curRoom = new Room();
 				curRoom.setPixelDimensions(this.pixelDimensions.width, this.pixelDimensions.height);
-				let exitDirs = this.getExitDirections({x: j, y: i});
+				let exitDirs = this.getExitDirections({x: j*2, y: i*2});
     			curRoom.setDirections(exitDirs);
     			if (!this.isMainRoom({x: j*2, y: i*2})) {
     				curRoom.setMazeRoom(true);
