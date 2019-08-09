@@ -32,15 +32,14 @@ var walls;
 var roomManager;
 
 function preload() {
-    this.load.image('player', [assetsFolder + 'bomb.png']);
-    this.load.image('bg', [assetsFolder + 'dungeonFloor.png']);
+    this.load.image('player', [assetsFolder + 'ghost.png']);
+    this.load.image('bg', [assetsFolder + 'dotsBgTile.png']);
     this.load.image('standardWall', [assetsFolder + 'brickWall.png'])
 }
 
 function create() {
     this.physics.world.setBounds(0, 0, 1280, 640);
-    let bg = this.add.image(1280 / 2, 640 / 2, 'bg');
-    bg.setDisplaySize(1280, 640);
+    let bg = this.add.tileSprite(640, 320, 1280, 640, 'bg');
 
 
     player = new Player({
@@ -54,6 +53,11 @@ function create() {
 
     this.add.existing(player);
     this.physics.world.enable(player);
+
+    player.setDisplaySize(24,24);
+
+    player.body.width = 24;
+    player.body.height = 24;
 
     player.setCollideWorldBounds(true);
     player.onWorldBounds = true;

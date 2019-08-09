@@ -103,6 +103,29 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 			this.setVelocityX(Math.sign(this.body.velocity.x) * this.getDiagonalSpeed(speed));
 			this.setVelocityY(Math.sign(this.body.velocity.y) * this.getDiagonalSpeed(speed));
 		}
+
+		this.setAngleBasedOnSpeed(this.body.velocity.x, this.body.velocity.y);
+	}
+
+	setAngleBasedOnSpeed(velX, velY) {
+		if (velY > 0 && velX === 0) {
+			this.angle = 180;
+		} else if (velY < 0 && velX === 0) {
+			this.angle = 0;
+		} else if (velY > 0 && velX > 0) {
+			this.angle = 135;
+		} else if (velY < 0 && velX > 0) {
+			this.angle = 45;
+		} else if (velY > 0 && velX < 0) {
+			this.angle = 225;
+		} else if (velY < 0 && velX < 0) {
+			this.angle = 315;
+		} else if (velY === 0 && velX > 0) {
+			this.angle = 90;
+		} else if (velY === 0 && velX < 0) {
+			this.angle = 270;
+		}
+
 	}
 
 }
