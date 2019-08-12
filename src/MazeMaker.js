@@ -162,6 +162,15 @@ export default class MazeMaker {
 
 	generateMazeWithAlgorithm() {
 		this.generateMazeWithRecursiveBacktracking();
+		this.createCentralRoomDoors();
+	}
+
+	createCentralRoomDoors() {
+		let centralRoomPos = {x: Math.floor(this.dimensions.width / 2), y: Math.floor(this.dimensions.height / 2)};
+		this.removeWallBetween(centralRoomPos, this.getPosUp(centralRoomPos, 2));
+		this.removeWallBetween(centralRoomPos, this.getPosDown(centralRoomPos, 2));
+		this.removeWallBetween(centralRoomPos, this.getPosToLeft(centralRoomPos, 2));
+		this.removeWallBetween(centralRoomPos, this.getPosToRight(centralRoomPos, 2));
 	}
 
 	isPositionOnEdge(position) {

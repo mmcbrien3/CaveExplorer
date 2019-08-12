@@ -39,7 +39,7 @@ function preload() {
 
 function create() {
     this.physics.world.setBounds(0, 0, 1280, 640);
-    let bg = this.add.tileSprite(640, 320, 1280, 640, 'bg');
+    //let bg = this.add.tileSprite(640, 320, 1280, 640, 'bg');
 
 
     player = new Player({
