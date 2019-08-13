@@ -32,6 +32,9 @@ export default class RoomManager {
     			curRoom.setDirections(exitDirs);
     			if (!this.isMainRoom({x: j*2, y: i*2})) {
     				curRoom.setMazeRoom(true);
+    			    			}
+    			if (this.isCornerRoom({x: j*2, y: i*2})) {
+    			 	curRoom.setKeyRoom(true);
     			}
     			curRoom.generateRoom();
     			this.rooms[i].push(curRoom);
@@ -40,9 +43,23 @@ export default class RoomManager {
 		this.setRoomBasedOnCurrentPosition();
 	}
 
+	isCornerRoom(pos) {
+		if (pos.x === 0 && pos.y === 0) {
+			return true;
+		} else if (pos.x === 0 && pos.y === this.dimensions.height) {
+			return true;
+		} else if (pos.x === this.dimensions.width && pos.y === 0) {
+			return true;
+		} else if (pos.x === this.dimensions.width && this.dimensions.height) {
+			return true;
+		}
 
-	drawCurrentRoom(group, wallKey) {
-    	this.currentRoom.drawRoom(group, 'standardWall')
+		return false;
+	}
+
+
+	drawCurrentRoom(gameObject, group, wallKey) {
+    	this.currentRoom.drawRoom(gameObject, group, 'standardWall')
 	}
 
 	isMainRoom(position) {
@@ -58,34 +75,41 @@ export default class RoomManager {
 		return exitDirs;
 	}
 
-	moveUp(group, key) {
+	moveUp(gameObject, group, key) {
 		this.currentRoomPos.y = this.currentRoomPos.y - 2;
-		this.doMove(group, key);
+		this.doMove(gameObject, group, key);
 	}
 
-	moveDown(group, key) {
+	moveDown(gameObject, group, key) {
 		this.currentRoomPos.y = this.currentRoomPos.y + 2;
-		this.doMove(group, key);
+		this.doMove(gameObject, group, key);
 	}
 
-	moveLeft(group, key) {
+	moveLeft(gameObject, group, key) {
 		this.currentRoomPos.x = this.currentRoomPos.x - 2;
-		this.doMove(group, key);
+		this.doMove(gameObject, group, key);
 	}
 
-	moveRight(group, key) {
+	moveRight(gameObject, group, key) {
 		this.currentRoomPos.x = this.currentRoomPos.x + 2;
-		this.doMove(group, key);
+		this.doMove(gameObject, group, key);
 	}
 
 	removeAllFromGroup(group) {
 		group.clear(true, true);
 	}
 
-	doMove(group, key) {
+	destroyKey() {
+		if (this.currentRoom.hasKey) {
+			this.currentRoom.removeKey();
+		}
+	}
+
+	doMove(gameObject, group, key) {
 		this.removeAllFromGroup(group);
+		this.destroyKey()
 		this.setRoomBasedOnCurrentPosition();
-		this.drawCurrentRoom(group, key)
+		this.drawCurrentRoom(gameObject, group, key)
 	}
 
 	setRoomBasedOnCurrentPosition() {

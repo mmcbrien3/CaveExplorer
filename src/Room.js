@@ -5,6 +5,8 @@ export default class Room {
 	constructor() {
 		this.doorDirections = [];
 		this.wallLocations = [];
+		this.keyLoc = null;
+		this.key = null;
 		this.enemyLocations = [];
 		this.difficulties = [
 			{difficulty: "EASY", enemyProbability: 0.01, wallDensity: 0.05},
@@ -36,17 +38,27 @@ export default class Room {
 		this.isMazeRoom = isMazeRoom;
 	}
 
+	setKeyRoom(isKeyRoom) {
+		this.hasKey = isKeyRoom;
+	}
+
 	generateRoom() {
 		this.addWallsAlongEdge();
 
 		if (this.isMazeRoom) {
 			this.generateMaze();
 		}
+		if (this.hasKey) {
+			this.generateKey();
+		}
 		this.generateRandomEnemies();
 	}
 
-	drawRoom(group, spriteKey) {
+	drawRoom(gameObject, group, spriteKey) {
 		this.addWallsToGroup(group, spriteKey);
+		if (this.hasKey) {
+			this.addKey(gameObject);
+		}
 	}
 
 	generateMaze() {
@@ -55,8 +67,33 @@ export default class Room {
 		this.wallLocations = this.wallLocations.concat(newWalls);
 	}
 
+	generateKey() {
+		this.keyLoc	= this.mazeMaker.getRandomPos();
+		while (this.mazeMaker.isPositionAnObject(this.keyLoc, this.mazeMaker.wall)) {
+			this.keyLoc = this.mazeMaker.getRandomPos();
+		}
+	}
+
 	generateRandomEnemies() {
 		return;
+	}
+
+	addKey(gameObject) {
+		this.key = gameObject.add.sprite(this.keyLoc.x * this.spriteWidth - this.spriteWidth / 2,
+										 this.keyLoc.y * this.spriteHeight - this.spriteHeight / 2,
+										  'key');
+		gameObject.anims.create({
+		    key: 'keyBounce',
+		    frames: gameObject.anims.generateFrameNumbers('key', { start: 0, end: 7 }),
+		    frameRate: 10,
+		    repeat: -1
+		});    
+		this.key.anims.play('keyBounce');
+		this.key.setDisplaySize(24, 24);
+	}
+
+	removeKey() {
+		this.key.destroy();
 	}
 
 	addWallsToGroup(group, key) {

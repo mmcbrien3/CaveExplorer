@@ -1,7 +1,7 @@
 
 export default class Player extends Phaser.Physics.Arcade.Sprite {
 
-	constructor(config) {
+	constructor(config, keyKey) {
 		super(config.game, config.x, config.y, config.key);
 
 		this.defaultSpeed = 300;
@@ -13,6 +13,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 		this.boostTickOffFor = 0;
 		this.boostOn = false;
 		this.boostAvailable = true;
+
+		this.isHoldingKey = false;
+		this.keyKey = keyKey;
 
 		//this.setDisplaySize(config.width / 28, config.height / 28);
 
@@ -29,7 +32,17 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
 	update() {
 		this.handleBoost();	
+		this.handleKey();
+	}
 
+	handleKey() {
+		if (!this.isHoldingKey) {
+			return;
+		}
+	}
+
+	onCollisionWithKey() {
+		this.isHoldingKey = true;
 	}
 
 	handleBoost() {

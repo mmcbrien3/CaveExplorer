@@ -1,5 +1,6 @@
 import Player from './Player.js';
 import RoomManager from './RoomManager.js';
+import Key from './Key.js'
 
 const scaleRatio = window.devicePixelRatio / 3;
 console.log(window.devicePixelRatio);
@@ -33,14 +34,13 @@ var roomManager;
 
 function preload() {
     this.load.image('player', [assetsFolder + 'ghost.png']);
+    this.load.spritesheet('key', [assetsFolder + 'key.png'], {frameWidth: 32, frameHeight: 32});
     this.load.image('bg', [assetsFolder + 'dotsBgTile.png']);
     this.load.image('standardWall', [assetsFolder + 'brickWall.png'])
 }
 
 function create() {
     this.physics.world.setBounds(0, 0, 1280, 640);
-    //let bg = this.add.tileSprite(640, 320, 1280, 640, 'bg');
-
 
     player = new Player({
             game: this,
@@ -69,7 +69,7 @@ function create() {
 
     roomManager.setPixelDimensions(1280, 640);
     roomManager.generateAllRooms();
-    roomManager.drawCurrentRoom(walls, 'standardWall');
+    roomManager.drawCurrentRoom(this, walls, 'standardWall');
 
     this.physics.add.collider(player, walls);
 
@@ -101,16 +101,16 @@ function update() {
     console.log(player.x);
     console.log(player.y);
     if (player.x <= player.body.halfWidth && player.y > 40 && player.y < 600) {
-        roomManager.moveLeft(walls, 'standardWall');
+        roomManager.moveLeft(this, walls, 'standardWall');
         player.x = 1280 - player.body.halfWidth - 1;
     } else if (player.x >= 1280 - player.body.halfWidth && player.y > 40 && player.y < 600) {
-        roomManager.moveRight(walls, 'standardWall');
+        roomManager.moveRight(this, walls, 'standardWall');
         player.x = player.body.halfWidth + 1;
     } else if (player.y >= 640 - player.body.halfHeight && player.x > 40 && player.x < 1240) {
-        roomManager.moveDown(walls, 'standardWall');
+        roomManager.moveDown(this, walls, 'standardWall');
         player.y = player.body.halfHeight + 1;
     } else if (player.y <= player.body.halfHeight && player.x > 40 && player.x < 1240) {
-        roomManager.moveUp(walls, 'standardWall');
+        roomManager.moveUp(this, walls, 'standardWall');
         player.y = 640 - player.body.halfHeight - 1;
     }
 }

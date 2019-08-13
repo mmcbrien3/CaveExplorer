@@ -14,6 +14,13 @@ export default class MazeMaker {
 		this.makeEmptyMaze();
 	}
 
+	isPositionAnObject(position, object) {
+		if (this.map[position.y][position.x] === object) {
+			return true;
+		}
+		return false;
+	}
+
 	makeEmptyMaze() {
 		this.map = [...Array(this.dimensions.width)].map(e => Array(this.dimensions.height).fill(this.wall));
 		for (let i = 0; i < this.dimensions.height; i+=2) {
