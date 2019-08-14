@@ -32,7 +32,7 @@ export default class RoomManager {
     			curRoom.setDirections(exitDirs);
     			if (!this.isMainRoom({x: j*2, y: i*2})) {
     				curRoom.setMazeRoom(true);
-    			    			}
+    			}
     			if (this.isCornerRoom({x: j*2, y: i*2})) {
     			 	curRoom.setKeyRoom(true);
     			}
@@ -46,11 +46,11 @@ export default class RoomManager {
 	isCornerRoom(pos) {
 		if (pos.x === 0 && pos.y === 0) {
 			return true;
-		} else if (pos.x === 0 && pos.y === this.dimensions.height) {
+		} else if (pos.x === 0 && pos.y === this.dimensions.height - 1) {
 			return true;
-		} else if (pos.x === this.dimensions.width && pos.y === 0) {
+		} else if (pos.x === this.dimensions.width - 1 && pos.y === 0) {
 			return true;
-		} else if (pos.x === this.dimensions.width && this.dimensions.height) {
+		} else if (pos.x === this.dimensions.width - 1 && pos.y === this.dimensions.height - 1) {
 			return true;
 		}
 

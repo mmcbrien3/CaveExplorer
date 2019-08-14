@@ -33,10 +33,10 @@ var walls;
 var roomManager;
 
 function preload() {
-    this.load.image('player', [assetsFolder + 'ghost.png']);
-    this.load.spritesheet('key', [assetsFolder + 'key.png'], {frameWidth: 32, frameHeight: 32});
-    this.load.image('bg', [assetsFolder + 'dotsBgTile.png']);
-    this.load.image('standardWall', [assetsFolder + 'brickWall.png'])
+    this.load.image('player', ['./assets/ghost.png']);
+    this.load.spritesheet('key', ['./assets/key.png'], {frameWidth: 32, frameHeight: 32});
+    this.load.image('bg', ['./assets/dotsBgTile.png']);
+    this.load.image('standardWall', ['./assets/brickWall.png'])
 }
 
 function create() {
